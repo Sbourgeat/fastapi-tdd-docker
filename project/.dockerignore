@@ -3,3 +3,4 @@ poetry.lock
 .dockerignore
 Dockerfile
 Dockerfile.prod
+.vscode
