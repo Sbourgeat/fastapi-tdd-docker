@@ -15,11 +15,10 @@ RUN apt-get update \
 
 # install python dependencies 
 RUN pip install --upgrade pip
-RUN pip install poetry
-COPY ./pyproject.toml .
-RUN poetry install
-
-# add app 
+#RUN pip install poetry
+COPY ./requirements.txt .
+RUN pip install -r requirements.txt
+# add app
 COPY . .
 
 # add entrypoint.sh
