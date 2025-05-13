@@ -5,6 +5,8 @@ from fastapi import APIRouter, HTTPException
 from app.api import crud 
 from app.models.pydantic import SummaryPayloadSchema, SummaryResponseSchema
 
+from app.models.tortoise import SummarySchema
+
 router = APIRouter()
 
 
@@ -21,3 +23,12 @@ async def create_summary(payload: SummaryPayloadSchema) -> SummaryResponseSchema
     }
 
     return response_object
+
+@router.get("/{id}/", response_model=SummarySchema)
+async def read_summary(id: int) -> SummarySchema:
+    """
+    Get a summary by ID
+    """
+    summary = await crud.get(id)
+    
+    return summary
