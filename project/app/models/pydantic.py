@@ -3,11 +3,9 @@
 from pydantic import BaseModel 
 
 class SummaryPayloadSchema(BaseModel):
-    """
-    Summary payload schema
-    """
     url : str
 
 
 class SummaryResponseSchema(BaseModel):
     id : int
+    url : str
