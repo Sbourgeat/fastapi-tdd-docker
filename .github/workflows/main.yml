@@ -3,7 +3,7 @@ name: Continuous Integration and Delivery
 on: [push]
 
 env: 
-  IMAGE: ghcr.io/$(echo $GITHUB_REPOSITORY | tr '[A-Z]' '[a-z]')/summarizer
+  IMAGE: ghcr.io/${{ github.repository | toLowerCase }}/summarizer
 
 jobs:
   build:
@@ -12,11 +12,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-        with:
-          ref: main
       - name: Log in to GitHub Packages
-        run: echo ${GITHUB_TOKEN} | docker login -u ${GITHUB_ACTOR} --password-stdin ghcr.io
-        env: GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: echo ${{ secrets.GITHUB_TOKEN }} | docker login -u ${{ github.actor }} --password-stdin ghcr.io
       - name: Pull image
         run: docker pull ${{ env.IMAGE }}:latest || true
       - name: Build image
@@ -27,8 +24,7 @@ jobs:
             --file ./project/Dockerfile.prod \
             "./project"
       - name: Push image
-        run: |
-          docker push ${{ env.IMAGE }}:latest
+        run: docker push ${{ env.IMAGE }}:latest
   
   test:
     name: Test Docker Image
@@ -37,20 +33,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-        with:
-          ref: main
-      - name: Log in to Github Packages
-        run: echo ${GITHUB_TOKEN} | docker login -u ${GITHUB_ACTOR} --password-stdin ghcr.io
-        env: GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Log in to GitHub Packages
+        run: echo ${{ secrets.GITHUB_TOKEN }} | docker login -u ${{ github.actor }} --password-stdin ghcr.io
       - name: Pull image
-        run: docker pull ${{ env.IMAGE }}:latest || true
-      - name: Build image 
-        run: |
-          docker build \
-            --cache-from ${{ env.IMAGE }}:latest \
-            --tag ${{ env.IMAGE }}:latest \
-            --file ./project/Dockerfile.prod \
-            "./project"
+        run: docker pull ${{ env.IMAGE }}:latest
       - name: Run container
         run: |
           docker run \
