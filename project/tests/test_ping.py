@@ -1,4 +1,4 @@
-# project/tests/tesdt_ping.py
+# project/tests/test_ping.py
 
 
 def test_ping(test_app):
