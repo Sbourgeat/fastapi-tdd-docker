@@ -1,11 +1,12 @@
-#project/app/models/pydantic.py
+# project/app/models/pydantic.py
 
-from pydantic import BaseModel 
+from pydantic import BaseModel
+
 
 class SummaryPayloadSchema(BaseModel):
-    url : str
+    url: str
 
 
 class SummaryResponseSchema(BaseModel):
-    id : int
-    url : str
+    id: int
+    url: str
