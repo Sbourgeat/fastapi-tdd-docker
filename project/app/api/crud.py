@@ -11,10 +11,7 @@ from app.models.pydantic import (  # isort:skip
 
 
 async def post(payload: SummaryPayloadSchema) -> int:
-    summary = TextSummary(
-        url=payload.url,
-        summary="dummy summary",
-    )
+    summary = TextSummary(url=payload.url, summary="")
     await summary.save()
     return summary.id
 
